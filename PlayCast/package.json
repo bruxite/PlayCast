@@ -1,0 +1,16 @@
+{
+  "name": "PlayCast",
+  "version": "0.1.0",
+  "description": "PlayCast - A website for sharepoint sports plays to local devices",
+  "main": "server.js",
+  "author": {
+    "name": "mbruxvoort",
+    "email": "mike.bruxvoort@gmail.com"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "underscore": "^1.8.3",
+    "vash": "^0.9.3"
+  },
+  "devDependencies": {}
+}
