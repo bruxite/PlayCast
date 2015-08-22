@@ -32,13 +32,17 @@
   <ItemGroup>
     <Compile Include="controllers\homeController.js" />
     <Compile Include="controllers\index.js" />
+    <Compile Include="data\database.js" />
     <Compile Include="data\index.js" />
     <Compile Include="data\seedData.js" />
     <Compile Include="gruntfile.js" />
+    <Compile Include="models\game.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
     <Content Include="public\css\site.css" />
     <Content Include="README.md" />
+    <Content Include="views\game.vash" />
+    <Content Include="views\game.vash.html" />
     <Content Include="views\index.vash" />
     <Content Include="views\index.vash.html" />
     <Content Include="views\layout.vash" />
@@ -47,6 +51,7 @@
   <ItemGroup>
     <Folder Include="controllers\" />
     <Folder Include="data\" />
+    <Folder Include="models\" />
     <Folder Include="public\" />
     <Folder Include="public\css\" />
     <Folder Include="services\" />

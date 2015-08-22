@@ -47,6 +47,6 @@
 	<script src="/lib/jquery/dist/jquery.min.js"></script>
 	<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/lib/underscore/underscore-min.js"></script>
-	<script src="/lib/video.js/dist/video.js"></script>
+	<script src="/lib/video.js/dist/video-js/video.js"></script>
 </body>
 </html>
