@@ -1,0 +1,74 @@
+﻿@html.extend('layout', function(model){
+	@html.block('body', function(model){
+		@if(model.error){
+            <p class="text-error">Error occurred: @model.error</p>
+		}
+
+<div class="row">
+    <div class="list-group col-lg-6">
+        <div class="row">
+            <form id="formAddPlay" name="formAddPlay" method="post" action="/play/add">
+                <div class="row">
+                    <div class="form-group col-xs-4">
+                        <label>Series Number</label>
+                        <input id="inputSeriesNumber" class="form-control" required="true" type="number" placeholder="Series" name="seriesNumber"/>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="radio">
+                            <label>Home</label>
+                            <input id="inputSeriesTeamHome" type="radio" value="Home" name="seriesTeam"/>
+                        </div>
+                        <div class="radio">
+                            <label>Away</label>
+                            <input id="inputSeriesTeamAway" type="radio" value="Away" name="seriesTeam"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-4">
+                        <label>Play Number</label>
+                        <input id="inputPlayNumber" class="form-control" required="true" type="number" placeholder="Series" name="playNumber"/>
+                    </div>
+                    <div class="form-group col-xs-4">
+                        <label>Down</label>
+                        <select id="inputDown" class="form-control" type="select" placeholder="Down" name="playDown">
+                            <option value="First Down">First Down</option>
+                            <option value="Second Down">Second Down</option>
+                            <option value="Third Down">FirstThird Down</option>
+                            <option value="Fourth Down">Fourth Down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Result of Play</label>
+                        <input id="inputVideo" class="form-control" type="text" placeholder="8 yards gained / Offensive holding" name="playResult"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Video</label>
+                        <input id="inputVideo" class="form-control" type="file" placeholder="Opponent" name="playVideo"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <input name="gameId" type="hidden" value="#{game._id}"/>
+                    <button id="btnSubmit" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <hr/>
+
+        @model.game.plays.forEach(function(play){
+        <a href="/game/@game._id" class="list-group-item list-group-item-info">
+            @game.opponent
+            <span>@(game.location ? " at " + game.location : "")</span>
+            <span>@(game.date ? " on " + game.date.toLocaleDateString() : "")</span>
+            <span class="badge">@(game.plays ? game.plays.length : 0)</span>
+        </a>
+        })
+    </div>
+</div>
+	})
+})

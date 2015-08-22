@@ -1,18 +1,22 @@
 ﻿(function (seedData) {
+    
+    var game = require('../models/game');
 
     seedData.initialGames = [
-        {
-            opponent: "Calvin Christian",
-            data: "2015-08-26",
-            location: "Home"
+        new game({
+            date: new Date("2015", "08", "26"),
+            opponent: "Some School",
+            location: "Home",
+            createdOn: new Date()
 
-        },
-        {
+        }),
+        new game({
+            date: new Date("2015", "08", "31"),
             opponent: "Zeeland West",
-            data: "2015-08-31",
-            location: "Away"
+            location: "Away",
+            createdOn: new Date()
 
-        }
+        })
     ];
 
 })(module.exports);
