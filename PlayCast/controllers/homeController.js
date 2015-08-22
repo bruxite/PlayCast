@@ -6,7 +6,7 @@
         //Home Page
         app.get("/", function (req, res) {
             data.getGames(function(err, games) {
-                res.render("index", { title: "Home | PlayCast", error: err, games: games});
+                res.render("index", { title: "Games | PlayCast", error: err, games: games});
             });
         });
     };

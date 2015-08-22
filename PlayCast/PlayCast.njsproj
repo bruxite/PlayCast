@@ -34,12 +34,15 @@
     <Compile Include="controllers\index.js" />
     <Compile Include="data\index.js" />
     <Compile Include="data\seedData.js" />
+    <Compile Include="gruntfile.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
     <Content Include="public\css\site.css" />
     <Content Include="README.md" />
     <Content Include="views\index.vash" />
+    <Content Include="views\index.vash.html" />
     <Content Include="views\layout.vash" />
+    <Content Include="views\layout.vash.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="controllers\" />
