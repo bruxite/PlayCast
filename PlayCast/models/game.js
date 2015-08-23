@@ -9,6 +9,7 @@ var PlaySchema = new Schema({
     down: { type: String, required: true },
     result: String,
     videoUrl: String,
+    videoType: String,
     createdOn: Date
 });
 

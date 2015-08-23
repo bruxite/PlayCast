@@ -1,59 +1,76 @@
 ﻿@html.extend('layout', function(model){
 	@html.block('body', function(model){
 		@if(model.error){
-            <p class="text-error">Error occurred: @model.error</p>
+<p class="text-error">Error occurred: @model.error</p>
 		}
 
 <div class="row">
-    <div class="list-group col-lg-6">
-        <div class="row">
-            <form id="formAddPlay" name="formAddPlay" method="post" action="/play/add">
-                <div class="row">
-                    <div class="form-group col-xs-4">
-                        <label>Series Number</label>
-                        <input id="inputSeriesNumber" class="form-control" required="true" type="number" placeholder="Series" name="seriesNumber"/>
+        <div class="panel-group">
+            <form id="formAddPlay" name="formAddPlay" method="post" enctype="multipart/form-data" action="/play/add">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse1">Add Game</a>
+                        </h4>
                     </div>
-                    <div class="col-xs-4">
-                        <div class="radio">
-                            <label>Home</label>
-                            <input id="inputSeriesTeamHome" type="radio" value="Home" name="seriesTeam"/>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label>Series Number</label>
+                                    <input id="inputSeriesNumber" class="form-control" required="true" type="number" placeholder="Series" name="seriesNumber" />
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="radio">
+                                        <label>Home</label>
+                                        <input id="inputSeriesTeamHome" type="radio" value="Home" name="seriesTeam" />
+                                    </div>
+                                    <div class="radio">
+                                        <label>Away</label>
+                                        <input id="inputSeriesTeamAway" type="radio" value="Away" name="seriesTeam" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label>Play Number</label>
+                                    <input id="inputPlayNumber" class="form-control" required="true" type="number" placeholder="Series" name="playNumber" />
+                                </div>
+                                <div class="form-group col-xs-6">
+                                    <label>Down</label>
+                                    <select id="inputDown" class="form-control" type="select" placeholder="Down" name="playDown">
+                                        <option value="First Down">First Down</option>
+                                        <option value="Second Down">Second Down</option>
+                                        <option value="Third Down">FirstThird Down</option>
+                                        <option value="Fourth Down">Fourth Down</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6" >
+                                    <label>Result of Play</label>
+                                    <input id="inputComments" class="form-control" type="text" placeholder="8 yards gained / Offensive holding" name="playResult" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label>Video</label>
+                                    <input id="inputVideo" class="form-control" type="file" placeholder="Opponent" name="playVideo" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <input name="gameId" type="hidden" value="@model.game._id"/>
+                                    <button id="btnSubmit" class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="radio">
-                            <label>Away</label>
-                            <input id="inputSeriesTeamAway" type="radio" value="Away" name="seriesTeam"/>
-                        </div>
+
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-4">
-                        <label>Play Number</label>
-                        <input id="inputPlayNumber" class="form-control" required="true" type="number" placeholder="Series" name="playNumber"/>
+                    <div class="panel-footer">
+                        
                     </div>
-                    <div class="form-group col-xs-4">
-                        <label>Down</label>
-                        <select id="inputDown" class="form-control" type="select" placeholder="Down" name="playDown">
-                            <option value="First Down">First Down</option>
-                            <option value="Second Down">Second Down</option>
-                            <option value="Third Down">FirstThird Down</option>
-                            <option value="Fourth Down">Fourth Down</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label>Result of Play</label>
-                        <input id="inputVideo" class="form-control" type="text" placeholder="8 yards gained / Offensive holding" name="playResult"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label>Video</label>
-                        <input id="inputVideo" class="form-control" type="file" placeholder="Opponent" name="playVideo"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <input name="gameId" type="hidden" value="#{game._id}"/>
-                    <button id="btnSubmit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -61,14 +78,30 @@
         <hr/>
 
         @model.game.plays.forEach(function(play){
-        <a href="/game/@game._id" class="list-group-item list-group-item-info">
-            @game.opponent
-            <span>@(game.location ? " at " + game.location : "")</span>
-            <span>@(game.date ? " on " + game.date.toLocaleDateString() : "")</span>
-            <span class="badge">@(game.plays ? game.plays.length : 0)</span>
-        </a>
+        <div class="playBox col-md-6">
+
+            <video id="@play._id" class="video-js vjs-default-skin"
+                   controls preload="auto" width="512" height="384"
+                   data-setup='{"example_option":true}'>
+                <source src="@play.videoUrl" type='video/mp4'/>
+                <!--<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm'/>
+                <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg'/>-->
+                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+
+
+            <!--<video width='512' height='384' controls='controls' class="playVideo"
+                       source src='@play.videoUrl' type='video/mp4'
+                       object data='@play.videoUrl' width='512' height='384'
+                       embed width='512' height='384' src='@play.videoUrl'></video>-->
+
+            <ul>
+                <li>@play.series - @play.down</li>
+                <li><a href='/plays/@play._id'>@play.series - @play.down</a></li>
+            </ul>
+        </div>
         })
     </div>
-</div>
 	})
 })

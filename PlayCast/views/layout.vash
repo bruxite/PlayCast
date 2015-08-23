@@ -1,52 +1,66 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<title>@model.title</title>
-	<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
-	<link href="/lib/video.js/dist/video-js/video-js.min.css" rel="stylesheet" />
-<link href="/css/site.css" rel="stylesheet" />
-	
+    <meta charset="utf-8" />
+    <title>@model.title</title>
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    @html.block("css")
+    <link href="/css/site.css" rel="stylesheet" />
+
 </head>
 <body>
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button class="btn btn-success navbar-toggle" data-toggle="collapse" data-target=".navbar collapse">
-					<span class="glyphicon glyphicon-chevron-down"></span>
-				</button>
-				<div id="logo">
-					<a href="/">
-						<h4>PlayCast</h4>
-					</a>
-				</div>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li class="nav">
-						<a href="/">Home</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<section id="body" class="container">
-		<div class="page-header">
-			<h1>@model.title</h1>
-		</div>
-		@html.block("body")
-	</section>
-	
-	<hr/>
-	
-	<footer class="container">
-		<p>PlayCast - Copyright @2015</p>
-	</footer>	
-				
-	<script src="/lib/jquery/dist/jquery.min.js"></script>
-	<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="/lib/underscore/underscore-min.js"></script>
-	<script src="/lib/video.js/dist/video-js/video.js"></script>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="btn btn-success navbar-toggle" data-toggle="collapse" data-target=".navbar collapse">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+                <div id="logo">
+                    <a href="/">
+                        <h4>PlayCast</h4>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav">
+                        <a href="/">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <section id="body" class="container">
+        <div class="page-header">
+            <h1>@model.title</h1>
+        </div>
+        @html.block("body")
+    </section>
+
+    <hr />
+
+    <footer class="container">
+        <p>PlayCast - Copyright @2015</p>
+    </footer>
+
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/underscore/underscore-min.js"></script>
+    <script src="/lib/angular/angular.min.js"></script>
+    <script src="/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="/lib/videogular/videogular.min.js"></script>
+    <script src="/lib/videogular-controls/vg-controls.min.js"></script>
+    <script src="/lib/videogular-overlay-play/vg-overlay-play.min.js"></script>
+    <script src="/lib/videogular-poster/vg-poster.min.js"></script>
+    <script src="/lib/videogular-buffering/vg-buffering.min.js"></script>
+
+
+    <script src="/js/app.js"></script>
+    <script src="/js/gamesView.js"></script>
+    <script src="/js/playsView.js"></script>
+
+    @html.block("scripts")
 </body>
 </html>

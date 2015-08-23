@@ -2,22 +2,30 @@
 var port = process.env.port || 3000;
 
 var express = require('express');
-var app = express();
-var controllers = require("./controllers");
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+
+var flash = require("connect-flash");
 
 var multer = require('multer');
-var fs = require("fs"); 
+var fs = require("fs");
+
+var controllers = require("./controllers");
+
+var app = express();
 
 app.set("view engine", "vash");
 
-//app.engine('vash.html', require('vash').__express);
+// Opt into service
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + "/public"));
 app.use('/uploads', express.static('uploads'));
 
-//Map the routes
-controllers.init(app);
-
+//var upload = multer({ dest: './uploads/' });
+//var upload = multer({ dest: './uploads/' });
+//app.use(multer({ dest: './uploads/' }));
 //app.use(multer({
 //    dest: './uploads/',
 //    rename: function (fieldname, filename) {
@@ -37,10 +45,15 @@ controllers.init(app);
 //    onFileSizeLimit: function (file) {
 //        console.log('Failed: ', file.originalname + " in path: " + file.path);
 //        fs.unlink('../tmpUploads/' + file.path); // delete the partially written file
-//    }
+//    }   
+//    })
+//);
 
-//}));
+//Map the routes
+controllers.init(app);
 
+
+//module.exports = app;
 
 var server = http.createServer(app);
 
