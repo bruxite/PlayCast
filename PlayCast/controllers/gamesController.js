@@ -1,7 +1,7 @@
 ﻿(function(gamesController) {
 
     var data = require("../data");
-    var game = require('../models/game');
+    var Game = require('../models/game');
 
     gamesController.init = function (app){
         
@@ -22,8 +22,10 @@
 
         app.get('/api/games/:gameId', function (req, res, next) {
             var gameId = req.params.gameId;
-            
+            console.log("inside get games api / getGame");
             data.getGame(gameId, function (err, game) {
+                console.log("received results from data.getGame");
+            
                 if (err) {
                     res.send(500, err);
                 } else if (game) {
@@ -36,19 +38,19 @@
 
         });
 
-        app.post("/api/games/add", function(req, res) {
+        app.post("/api/games/add", function(req, res, next) {
+            console.log("in api to add game");
 
-            var gameId = req.params.gameId;
-
-            var game = new Game();
-            game.date = req.body.date,
-            game.opponent = req.body.opponent;
-            game.location = req.body.location;
-            game.plays = [];
-            game.isDeleted = false;
-            game.createdOn = new Date();
+            var game = new Game({
+                date: req.body.date,
+                opponent: req.body.opponent,
+                location: req.body.location,
+                plays: [],
+                isDeleted: false,
+                createdOn: new Date()
+            });
                 
-            data.addGameApi(game, req, function(err, savedGame) {
+            data.addGame(game, function(err, savedGame) {
                 if (err) {
                     res.send(500, err);
                 } else {

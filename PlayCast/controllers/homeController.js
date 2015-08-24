@@ -33,20 +33,21 @@
 
         //Game Page
         app.get('/game/:id', function (req, res, next) {
-            var gameId = req.params.id;
+            
+            res.render('game', { title: 'Game | PlayCast' });
 
-            data.getGame(gameId, function(err, game) {
-                if (game) {
-                    res.render('game', {
-                        title: 'Game ' + game.opponent,
-                        "game": game
-                    });
-                } else {
-                    res.render("index", { title: "Games | PlayCast", error: err });
-                }
-                
-                
-            });
+            //data.getGame(gameId, function(err, game) {
+            //    if (game) {
+            //        res.render('game', {
+            //            title: 'Game ' + game.opponent,
+            //            "game": game
+            //        });
+            //    } else {
+            //        res.render("index", { title: "Games | PlayCast", error: err });
+            //    }
+
+
+            //});
 
         });
 

@@ -12,7 +12,7 @@
                     <a href="/game/{{game._id}}" class="list-group-item list-group-item-info">
                         {{game.opponent}}
                         <span data-ng-show="game.location"> at {{game.location}}</span>
-                        <span data-ng-show="game.date"> on {{game.date.toLocaleDateString()}}</span>
+                        <span data-ng-show="game.date" ng-bind="game.date | date:'MM/dd/yyyy'"></span>
                         <span class="badge">{{game.play.count}}</span>
                     </a>
                 </div>
@@ -21,7 +21,7 @@
         <hr />
         <div class="row">
             <h2>Add New Game</h2>
-            <form name="addGame" method="post" action="/api/games/add">
+            <form role="form" class="form-horizontal" name="addGame" ng-submit="saveGame(newGame)">
                 <div class="form-group">
                     <label>Date</label>
                     <input class="form-control" type="date" data-ng-model="newGame.date" name="date" required/>

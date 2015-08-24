@@ -5,7 +5,8 @@
     var fs = require("fs");
     var path = require('path');
 
-    var game = require('../models/game');
+    var Game = require('../models/game');
+    var Play = require('../models/play');
 
     //data.getGames = function(next) {
     //    next(null, seedData.initialGames);
@@ -13,7 +14,7 @@
     
     //return all games
     data.getGames = function(next) {
-        game.find(function(err, games) {
+        Game.find(function(err, games) {
             if (err) {
                 console.log("Game.Find Error: " + err);
                 next(err, null);
@@ -24,8 +25,7 @@
     };
 
     data.getGame = function (gameId, next) {
-        console.log("game id: " + gameId);
-        game.findOne({ _id: gameId }, function (err, game) {
+        Game.findOne({ _id: gameId }, function (err, game) {
             if (err) {
                 console.log("Game.Find Error: " + err);
                 next(err, null);
@@ -34,13 +34,8 @@
                 err = "Game not found.";
                 next(err, null);
             } else {
-                console.log('Found game ' + gameId + ' .');
-                //console.log(game);
-
                 var uploadPath = 'uploads/' + gameId;
-                console.log('upload path: ' + uploadPath);
                 fs.exists(uploadPath, function (exists) {
-                    console.log('game upload folder exists: ' + exists.toString());
                     if (exists == false) {
                         fs.mkdir(uploadPath, 0755, function (err) {
                             console.log("making upload directory");
@@ -56,20 +51,24 @@
         });
     };
     
-    data.addGame = function (game, req, next) {
-        console.log(game);
+    data.addGame = function (newGame, next) {
+        console.log("in data.addGame");
+        console.log(newGame);
 
-        game.find({ opponent: game.opponent, date: game.date }, function(err, game) {
+        Game.find({ opponent: newGame.opponent, date: newGame.date }, function(err, foundGame) {
             if (err) {
-                Console.log("Game Add error on checking for existing game: " + err);
+                console.log("Game Add error on checking for existing game: " + err);
                 next(err, null);
+            } else if (foundGame._id != undefined) {
+                console.log("Game Add found existing game: " + foundGame._id);
+                next(null, foundGame);
             } else {
-                game.add(function(err, gameSaved) {
+                newGame.save(function(err, savedGame) {
                     if (err) {
-                        Console.log("Game Add error on checking for existing game: " + err);
+                        console.log("Game Add error on checking for existing game: " + err);
                         next(err, null);
                     } else {
-                        next(null, gameSaved);
+                        next(null, savedGame);
                     }
                 });
             }   
@@ -81,7 +80,7 @@
         console.log("game id: " + gameId);
         console.log("play id: " + playId);
 
-        game.findOne({ _id: gameId }, function (err, game) {
+        Game.findOne({ _id: gameId }, function (err, game) {
             if (err) {
                 console.log("Game.Find Error: " + err);
                 next(err, null);
@@ -100,8 +99,9 @@
         });
     }
 
-    data.addPlay = function(req, next) {
-        //console.log(req.file);
+    data.addPlay = function(gameId, play, req, next) {
+        console.log("inside data.addPlay");
+        console.log(req.file);
         if (!req.file) {
             next("req.file was not found.", null);
         } else {
@@ -131,70 +131,8 @@
             playVideo = "/" + playVideo.replace("\\\\", "/");
             console.log("replacedNewVideoUrlPath: " + playVideo);
         
-            game.update(
+            Game.update(
                 { "_id": req.body.gameId },
-            {
-                    "$push": {
-                        "plays": {
-                            seriesNumber: req.body.seriesNumber,
-                            seriesTeam: req.body.seriesTeam,
-                            playNumber: req.body.playNumber,
-                            down: req.body.playDown,
-                            result: req.body.playResult,
-                            videoUrl: playVideo,
-                            videoType: req.file.mimetype,
-                            createdOn: new Date()
-                        }
-                    }
-                },
-            { safe: true, upsert: true },
-            function (err, game) {
-                    if (err) {
-                        // If it failed, return error
-                        console.log(err);
-                        next(err, null);
-                    } else {
-                        next(null, game);
-                    }
-                }
-            );
-        });
-    };
-    
-    data.addPlayApi = function (gameId, play, req, next) {
-        
-        //console.log(req.file);
-        if (!req.file) {
-            next("req.file was not found.", null);
-        } else {
-            fs.exists(req.file.path, function (exists) {
-                if (exists) {
-                    console.log("req.file found on filesystem.");
-                    
-                } else {
-                    console.log("req.file did not exist on filesystem.");
-                    next("req.file did not exist on filesystem.", null);
-                }
-            });
-        }
-        console.log("gameId: " + gameId);
-        console.log("oldVideoUrlPath: " + req.file.path);
-        console.log("filename: " + req.file.filename);
-        
-        var playVideo = "uploads\\" + gameId + "\\" + req.file.filename.replace("/", "");
-        console.log("newVideoUrlPath: " + playVideo);
-        
-        fs.rename(req.file.path, playVideo, function (err) {
-            if (err) {
-                next("Error occurred in rename: " + err);
-            }
-            console.log('Renamed complete');
-            
-            playVideo = "/" + playVideo.replace("\\\\", "/");
-            console.log("replacedNewVideoUrlPath: " + playVideo);
-            
-            game.update(
-                { "_id": gameId },
             {
                     "$push": {
                         "plays": play
@@ -213,10 +151,63 @@
             );
         });
     };
+    
+    //data.addPlayApi = function (gameId, play, req, next) {
+        
+    //    //console.log(req.file);
+    //    if (!req.file) {
+    //        next("req.file was not found.", null);
+    //    } else {
+    //        fs.exists(req.file.path, function (exists) {
+    //            if (exists) {
+    //                console.log("req.file found on filesystem.");
+                    
+    //            } else {
+    //                console.log("req.file did not exist on filesystem.");
+    //                next("req.file did not exist on filesystem.", null);
+    //            }
+    //        });
+    //    }
+    //    console.log("gameId: " + gameId);
+    //    console.log("oldVideoUrlPath: " + req.file.path);
+    //    console.log("filename: " + req.file.filename);
+        
+    //    var playVideo = "uploads\\" + gameId + "\\" + req.file.filename.replace("/", "");
+    //    console.log("newVideoUrlPath: " + playVideo);
+        
+    //    fs.rename(req.file.path, playVideo, function (err) {
+    //        if (err) {
+    //            next("Error occurred in rename: " + err);
+    //        }
+    //        console.log('Renamed complete');
+            
+    //        playVideo = "/" + playVideo.replace("\\\\", "/");
+    //        console.log("replacedNewVideoUrlPath: " + playVideo);
+            
+    //        game.update(
+    //            { "_id": gameId },
+    //        {
+    //                "$push": {
+    //                    "plays": play
+    //                }
+    //            },
+    //        { safe: true, upsert: true },
+    //        function (err, game) {
+    //                if (err) {
+    //                    // If it failed, return error
+    //                    console.log(err);
+    //                    next(err, null);
+    //                } else {
+    //                    next(null, game);
+    //                }
+    //            }
+    //        );
+    //    });
+    //};
 
     function seedDatabase() {
         
-        game.count({}, function (err, count) {
+        Game.count({}, function (err, count) {
             if (err) {
                 console.log("Error occurred seeding the data: " + err);
             } else {
