@@ -1,73 +1,119 @@
 ﻿@html.extend('layout', function(model){
 	@html.block('body', function(model){
-		@if(model.error){
-            <p class="text-error">Error occurred: @model.error</p>
-		}
+		
+<div class="row" data-ng-app="playCast" data-ng-controller="gamesViewController">
+    <div class="panel-group">
+        <form role="form" class="form-horizontal" name="addPlay" enctype="multipart/form-data" ng-submit="savePlay(newPlay.playVideo)">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse1">Add Play</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label>Series Number</label>
+                                <input class="form-control" type="number" data-ng-model="newPlay.seriesNumber" name="seriesNumber" required />
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Home" name="seriesTeam" />
+                                        Home
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Away" name="seriesTeam" />
+                                        Away
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label>Play Number</label>
+                                <input class="form-control" type="number" data-ng-model="newPlay.playNumber" name="playNumber" required />
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>Down</label>
+                                <select class="form-control" type="select" data-ng-model="newPlay.playDown" name="playDown" required>
+                                    <option value="First Down">First Down</option>
+                                    <option value="Second Down">Second Down</option>
+                                    <option value="Third Down">FirstThird Down</option>
+                                    <option value="Fourth Down">Fourth Down</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label>Result of Play - {{newPlay.playResult}}</label>
 
-<div class="row">
-    <div class="list-group col-lg-6">
-        <div class="row">
-            <form id="formAddPlay" name="formAddPlay" method="post" action="/play/add">
-                <div class="row">
-                    <div class="form-group col-xs-4">
-                        <label>Series Number</label>
-                        <input id="inputSeriesNumber" class="form-control" required="true" type="number" placeholder="Series" name="seriesNumber"/>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="radio">
-                            <label>Home</label>
-                            <input id="inputSeriesTeamHome" type="radio" value="Home" name="seriesTeam"/>
+                                <input class="form-control" type="text" placeholder="8 yards gained / Offensive holding" data-ng-model="newPlay.playResult" name="playResult" />
+                            </div>
                         </div>
-                        <div class="radio">
-                            <label>Away</label>
-                            <input id="inputSeriesTeamAway" type="radio" value="Away" name="seriesTeam"/>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label>Video</label>
+                                <input class="form-control" type="file" ngf-select accept="video/*" data-ng-model="newPlay.playVideo" name="playVideo"/>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <p>game._id - {{game._id}}</p>
+                                <p>newPlay.gameId - {{newPlay.gameId}}</p>
+                                <input name="gameId" type="hidden" data-ng-model="newPlay.gameId"/>
+                                <button class="btn btn-primary" type="submit" ng-disabled="addPlay.$invalid">Submit</button>
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="row">
-                    <div class="form-group col-xs-4">
-                        <label>Play Number</label>
-                        <input id="inputPlayNumber" class="form-control" required="true" type="number" placeholder="Series" name="playNumber"/>
-                    </div>
-                    <div class="form-group col-xs-4">
-                        <label>Down</label>
-                        <select id="inputDown" class="form-control" type="select" placeholder="Down" name="playDown">
-                            <option value="First Down">First Down</option>
-                            <option value="Second Down">Second Down</option>
-                            <option value="Third Down">FirstThird Down</option>
-                            <option value="Fourth Down">Fourth Down</option>
-                        </select>
-                    </div>
+                <div class="panel-footer">
+
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label>Result of Play</label>
-                        <input id="inputVideo" class="form-control" type="text" placeholder="8 yards gained / Offensive holding" name="playResult"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label>Video</label>
-                        <input id="inputVideo" class="form-control" type="file" placeholder="Opponent" name="playVideo"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <input name="gameId" type="hidden" value="#{game._id}"/>
-                    <button id="btnSubmit" type="submit">Submit</button>
-                </div>
-            </form>
+            </div>
+        </form>
+    </div>
+
+    <hr />
+    <div data-ng-init="getGame()">
+        <h2>{{game.opponent}}</h2>
+        <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays">
+
+            <div data-ng-controller="playsViewController" class="playBox col-md-6 videogular-container">
+                <p>{{play.videoType}}</p>
+                <videogular vg-theme="videogularConfig.theme">
+                    <vg-media vg-src="play.sources"
+                              vg-tracks="play.tracks">
+                    </vg-media>
+
+                    <vg-controls>
+                        <vg-play-pause-button></vg-play-pause-button>
+                        <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-scrub-bar>
+                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                        </vg-scrub-bar>
+                        <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                        <vg-volume>
+                            <vg-mute-button></vg-mute-button>
+                            <vg-volume-bar></vg-volume-bar>
+                        </vg-volume>
+                        <vg-fullscreen-button></vg-fullscreen-button>
+                    </vg-controls>
+
+                    <vg-overlay-play></vg-overlay-play>
+                </videogular>
+
+                <ul>
+                    <li>{{play.series}} - {{play.down}}</li>
+                    <li><a href='/plays/{{play._id}}'>{{play.series}} - {{play.down}}</a></li>
+                </ul>
+            </div>
         </div>
-
-        <hr/>
-
-        @model.game.plays.forEach(function(play){
-        <a href="/game/@game._id" class="list-group-item list-group-item-info">
-            @game.opponent
-            <span>@(game.location ? " at " + game.location : "")</span>
-            <span>@(game.date ? " on " + game.date.toLocaleDateString() : "")</span>
-            <span class="badge">@(game.plays ? game.plays.length : 0)</span>
-        </a>
-        })
     </div>
 </div>
 	})
