@@ -1,6 +1,6 @@
 ﻿@html.extend('layout', function(model){
 	@html.block('body', function(model){
-		
+
 <div class="row" data-ng-app="playCast" data-ng-controller="gamesViewController">
     <div class="panel-group">
         <form role="form" class="form-horizontal" name="addPlay" enctype="multipart/form-data" ng-submit="savePlay(newPlay.playVideo)">
@@ -20,14 +20,14 @@
                             <div class="col-xs-6">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Home" name="seriesTeam" />
-                                        Home
+                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Offense" name="seriesTeam" />
+                                        Offense
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Away" name="seriesTeam" />
-                                        Away
+                                        <input type="radio" data-ng-model="newPlay.seriesTeam" value="Defense" name="seriesTeam" />
+                                        Defense
                                     </label>
                                 </div>
                             </div>
@@ -57,14 +57,14 @@
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label>Video</label>
-                                <input class="form-control" type="file" ngf-select accept="video/*" data-ng-model="newPlay.playVideo" name="playVideo"/>
+                                <input class="form-control" type="file" ngf-select accept="video/*" data-ng-model="newPlay.playVideo" name="playVideo" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <p>game._id - {{game._id}}</p>
                                 <p>newPlay.gameId - {{newPlay.gameId}}</p>
-                                <input name="gameId" type="hidden" data-ng-model="newPlay.gameId"/>
+                                <input name="gameId" type="hidden" data-ng-model="newPlay.gameId" />
                                 <button class="btn btn-primary" type="submit" ng-disabled="addPlay.$invalid">Submit</button>
                             </div>
                         </div>
@@ -82,9 +82,10 @@
     <hr />
     <div data-ng-init="getGame()">
         <h2>{{game.opponent}}</h2>
-        <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays">
+        <p>Plays.length - {{game.plays.length}}</p>
+        <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays  | orderBy:'createdOn':true">
 
-            <div data-ng-controller="playsViewController" class="playBox col-md-6 videogular-container">
+            <div class="playBox col-md-6 videogular-container">
                 <p>{{play.videoType}}</p>
                 <videogular vg-theme="videogularConfig.theme">
                     <vg-media vg-src="play.sources"

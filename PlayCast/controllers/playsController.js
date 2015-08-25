@@ -3,7 +3,10 @@
     var data = require("../data");
     var Game = require('../models/game');
     var Play = require('../models/play');
-    
+    var formidable = require('formidable');
+    var path = require('path');
+    var fs = require('fs');
+
     var multer = require('multer');
     var upload = multer({
         dest: 'uploads/',
@@ -50,34 +53,67 @@
 
         });
         
-        app.post("/api/plays/add/:gameId", fields, upload.single('playVideo'), function (req, res) {
+        app.post("/api/plays/add/:gameId", function (req, res, next) {
             console.log("inside api add play");
-            var gameId = req.params.gameId;
-            console.log(gameId);
-            
-            console.log("req.body");
-            console.log(req.body);
-            console.log("req.file");
-            console.log(req.file);
 
-            var play = new Play({
-                seriesNumber: req.body.seriesNumber,
-                seriesTeam: req.body.seriesTeam,
-                playNumber: req.body.playNumber,
-                down: req.body.playDown,
-                result: req.body.playResult,
-                videoType: req.file.mimetype,
-                createdOn: new Date()
+            var form = new formidable.IncomingForm();
+            form.parse(req, function (err, fields, files) {
+                var file = files.file;
+                var gameId = fields.gameId;
+                console.log(file);
+                console.log(file.path);
+                console.log(file.type);
+                console.log(fields);
+                var play = new Play({
+                    seriesNumber: fields.seriesNumber,
+                    seriesTeam: fields.seriesTeam,
+                    playNumber: fields.playNumber,
+                    down: fields.playDown,
+                    result: fields.playResult,
+                    videoType: file.type,
+                    createdOn: new Date()
+                });
+                var tempPath = file.path;
+                console.log('tempPath');
+                console.log(tempPath);
+                var savePath = './public/uploads/' + gameId + '/'
+                console.log('savePath');
+                console.log(savePath);
+                
+                var targetPath = path.resolve(savePath + file.name);
+                fs.rename(tempPath, targetPath, function(err) {
+                    if (err) {
+                        throw err;
+                    }
+                    //logger.debug(file.name + " upload complete for game: " + fields.gameId);
+                    //next({ path: savePath + file.name });
+                    play.videoUrl = savePath + file.name;
+                    console.log(play);
+                    data.addPlay(gameId, play, req, function (err, play) {
+                        if (err) {
+                            res.send(500, err);
+                        } else {
+                            console.log('received result from data.addPlay');
+                            console.log(play);
+                            res.set("Content-Type", "application/json");
+                            res.send(play);
+                        }
+                    });
+
+                });
             });
+
+            //var gameId = req.params.gameId;
+            //console.log(gameId);
             
-            data.addPlay(gameId, play, req, function (err, game) {
-                if (err) {
-                    res.send(500, err);
-                } else {
-                    res.set("Content-Type", "application/json");
-                    res.send(game);
-                }
-            });
+            //console.log("req.body");
+            //console.log(req.body);
+            //console.log("req.file");
+            //console.log(req.file);
+
+            
+            
+            
         });
 
     };
