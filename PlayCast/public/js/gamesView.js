@@ -80,6 +80,7 @@ app.controller("gamesViewController", [
         
         $scope.savePlay = function (file) {
             console.log("inside save Play");
+            console.log($scope.newPlay.gameId);
             console.log(file);
             if (file) {
                 Upload.upload({

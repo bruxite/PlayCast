@@ -2,16 +2,19 @@
 
     var seedData = require("./seedData");
     var database = require("./database");
-    
-    var game = require('../models/game');
+    var path = require('path');
+    var fs = require('fs');
 
+    var Game = require('../models/game');
+    var Play = require('../models/play');
+    
     //data.getGames = function(next) {
     //    next(null, seedData.initialGames);
     //};
     
     //return all games
     data.getGames = function(next) {
-        game.find(function(err, games) {
+        Game.find(function(err, games) {
             if (err) {
                 console.log("Game.Find Error: " + err);
                 next(err, null);
@@ -22,8 +25,7 @@
     };
 
     data.getGame = function (gameId, next) {
-        console.log("game id: " + gameId);
-        game.findOne({ _id: gameId }, function (err, game) {
+        Game.findOne({ _id: gameId }, function (err, game) {
             if (err) {
                 console.log("Game.Find Error: " + err);
                 next(err, null);
@@ -32,8 +34,18 @@
                 err = "Game not found.";
                 next(err, null);
             } else {
-                console.log('Found game ' + gameId + ' .');
-                console.log(game);
+                var uploadPath = 'uploads/' + gameId;
+                fs.exists(uploadPath, function (exists) {
+                    if (exists == false) {
+                        fs.mkdir(uploadPath, 0755, function (err) {
+                            console.log("making upload directory");
+                            if (err) {
+                                console.log("Error creating folder: " + err);
+                            }
+                        });
+                    }
+                });
+                
                 next(null, game);
             }
         });
@@ -53,7 +65,7 @@
         console.log("inside data.add play");
         console.log(gameId);
         console.log(play);
-        game.update(
+        Game.update(
             { "_id": gameId },
             {
                 "$push": {
@@ -77,7 +89,7 @@
 
     function seedDatabase() {
         
-        game.count({}, function (err, count) {
+        Game.count({}, function (err, count) {
             if (err) {
                 console.log("Error occurred seeding the data: " + err);
             } else {

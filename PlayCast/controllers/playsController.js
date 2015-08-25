@@ -1,12 +1,13 @@
 ﻿(function (playsController) {
     
     var data = require("../data");
-    var Game = require('../models/game');
-    var Play = require('../models/play');
     var formidable = require('formidable');
     var path = require('path');
     var fs = require('fs');
-
+    
+    var Game = require('../models/game');
+    var Play = require('../models/play');
+    
     var multer = require('multer');
     var upload = multer({
         dest: 'uploads/',
@@ -76,7 +77,7 @@
                 var tempPath = file.path;
                 console.log('tempPath');
                 console.log(tempPath);
-                var savePath = './public/uploads/' + gameId + '/'
+                var savePath = 'uploads/' + gameId + '/'
                 console.log('savePath');
                 console.log(savePath);
                 
