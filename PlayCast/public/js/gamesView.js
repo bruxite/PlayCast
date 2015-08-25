@@ -45,6 +45,7 @@ app.controller("gamesViewController", [
         }
         
         $scope.getGame = function () {
+            console.log("inside $scope.getGame");
             var urlParts = $location.absUrl().split("/");
             
             var gameId = urlParts[urlParts.length - 1];
@@ -52,7 +53,7 @@ app.controller("gamesViewController", [
             $http.get("/api/games/" + gameId)
                 .then(function (result) {
                 console.log("received results from getGame API");
-                console.log(result);
+                console.log(result.data);
                 $scope.newPlay.gameId = result.data._id;
                 $scope.game = result.data;
             }), function (err) {
@@ -96,8 +97,9 @@ app.controller("gamesViewController", [
                     console.log('progress: ' + progressPercentage + '% ' + event.config.file.name);
                 }).success(function (data, status, headers, config) {
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + JSON.stringify(data));
-                    $scope.games.push(result.data);
+                    $scope.games.push(data);
                     $scope.newGame = createBlankGame();
+                    $scope.$apply();
                 });
             }
         }

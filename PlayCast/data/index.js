@@ -39,7 +39,7 @@
         });
     };
 
-    data.addPlay = function(req, next) {
+    data.addPlay = function(gameId, play, req, next) {
         var playVideo = "";
         //if (req.files) {
         //    fs.exists(req.files.playVideo.path, function (exists) {
@@ -50,31 +50,26 @@
         //        }
         //    });
         //}
-        console.log("inside add play");
-        console.log(req);
+        console.log("inside data.add play");
+        console.log(gameId);
+        console.log(play);
         game.update(
-            { "_id": req.body.gameId },
+            { "_id": gameId },
             {
                 "$push": {
-                    "plays": {
-                        seriesNumber: req.body.seriesNumber,
-                        seriesTeam: req.body.seriesTeam,
-                        playNumber: req.body.playNumber,
-                        down: req.body.playDown,
-                        result: req.body.playResult,
-                        videoUrl: "/" + req.files.playVideo.path.replace("\\", "/"),
-                        createdOn: new Date()
-                    }
+                    "plays": play
                 }
             },
             { safe: true, upsert: true },
-            function(err, game) {
+            function(err, result) {
                 if (err) {
                     // If it failed, return error
                     console.log(err);
                     next(err, null);
                 } else {
-                    next(null, game);
+                    console.log('game.update');
+                    console.log(result);
+                    next(null, play);
                 }
             }
         );

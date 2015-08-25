@@ -30,13 +30,19 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="controllers\gamesController.js" />
     <Compile Include="controllers\homeController.js" />
     <Compile Include="controllers\index.js" />
+    <Compile Include="controllers\playsController.js" />
     <Compile Include="data\database.js" />
     <Compile Include="data\index.js" />
     <Compile Include="data\seedData.js" />
     <Compile Include="gruntfile.js" />
     <Compile Include="models\game.js" />
+    <Compile Include="models\play.js" />
+    <Compile Include="public\js\app.js" />
+    <Compile Include="public\js\gamesView.js" />
+    <Compile Include="public\js\playsView.js" />
     <Compile Include="server.js" />
     <Content Include="package.json" />
     <Content Include="public\css\site.css" />
@@ -47,6 +53,8 @@
     <Content Include="views\index.vash.html" />
     <Content Include="views\layout.vash" />
     <Content Include="views\layout.vash.html" />
+    <Content Include="views\play.vash" />
+    <Content Include="views\play.vash.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="controllers\" />
@@ -54,7 +62,7 @@
     <Folder Include="models\" />
     <Folder Include="public\" />
     <Folder Include="public\css\" />
-    <Folder Include="services\" />
+    <Folder Include="public\js\" />
     <Folder Include="views\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
