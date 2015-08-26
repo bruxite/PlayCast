@@ -5,12 +5,13 @@
 <p class="text-error">Error occurred: @model.error</p>
 		}
 
-<div data-ng-app="playCast" class="row">
-    <a href="/" class="btn btn-info">Back</a>
+<div data-ng-app="playCast" data-ng-controller="playsViewController" class="row" data-ng-init="getPlay()">
+    <a href="/game/{{gameId}}" class="btn btn-info">Back</a>
     <hr/>
+    <p>{{play.videoType}}</p>
+    <p>{{play.videoUrl}}</p>
 
-    <div data-ng-controller="playsViewController" class="playBox col-md-6 videogular-container">
-        <p>{{play.videoType}}</p>
+    <div class="playBox col-md-6 videogular-container">
         <videogular vg-theme="videogularConfig.theme">
             <vg-media vg-src="play.sources"
                       vg-tracks="play.tracks">

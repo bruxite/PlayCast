@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label>Play Number</label>
-                                <input class="form-control" type="number" data-ng-model="newPlay.playNumber" name="playNumber" required/>
+                                <input class="form-control" type="number" data-ng-model="newPlay.playNumber" name="playNumber" required />
                             </div>
                             <div class="form-group col-xs-6">
                                 <label>Down</label>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-group col-xs-6">
                                 <label>Penalty?</label>
-                                <input class="form-control" type="checkbox" data-ng-model="newPlay.playPenalty" name="playPenalty"/>
+                                <input class="form-control" type="checkbox" data-ng-model="newPlay.playPenalty" name="playPenalty" />
                             </div>
 
                         </div>
@@ -94,6 +94,7 @@
         <h2>{{game.opponent}}</h2>
         <p>Plays.length - {{game.plays.length}}</p>
         <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays  | orderBy:'createdOn':true">
+            <a href='/plays/{{game._id}}/{{play._id}}'>{{play.seriesNumber}} - {{play.playDown}} - {{play.seriesTeam}}</a>
 
             <div class="playBox col-md-6 videogular-container">
                 <p>{{play.videoType}}</p>
@@ -121,7 +122,7 @@
 
                 <ul>
                     <li>{{play.series}} - {{play.down}}</li>
-                    <li><a href='/plays/{{play._id}}'>{{play.series}} - {{play.down}}</a></li>
+                    <li><a href='/plays/{{game._id}}/{{play._id}}'>{{play.series}} - {{play.down}}</a></li>
                 </ul>
             </div>
         </div>

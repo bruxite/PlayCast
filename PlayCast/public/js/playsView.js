@@ -8,7 +8,8 @@ app.controller("playsViewController",
     ["$scope", "$window", "$http", "$location", "$sce",
     function ($scope, $window, $http, $location, $sce) {
         $scope.play = null;
-        
+        $scope.game = null;
+        $scope.gameId = "";
         //var createBlankPlay = function () {
         //    console.log("createBlankPlay called");
         //    return {
@@ -33,23 +34,31 @@ app.controller("playsViewController",
             
             var gameId = urlParts[urlParts.length - 2];
             var playId = urlParts[urlParts.length - 1];
-            
+            $scope.gameId = gameId;
+
             var playApiUrl = "/api/plays/" + gameId + "/" + playId;
             console.log(playApiUrl);
             
             $http.get(playApiUrl)
                 .then(function (result) {
-                console.log("results...");
-                console.log(result);
-                $scope.play = result.data;
-                $scope.play.sources = [
-                    { src: $sce.trustAsResourceUrl($scope.play.videoUrl), type: $scope.play.videoType }
-                ];
-                $scope.play.tracks = [];
-                console.log($scope.play);
-            }, function (err) {
-                alert(err);
-            }
+                    console.log("results...");
+                    console.log(result);
+                    $scope.game = result.data;
+                    console.log('$scope.game');
+                    console.log($scope.game);
+                    $scope.play = $scope.game.plays.filter(function (play) {
+                        return play._id == playId;
+                    }).pop();
+                    console.log('play');
+                    console.log($scope.play);
+                    $scope.play.sources = [
+                        { src: $sce.trustAsResourceUrl($scope.play.videoUrl), type: $scope.play.videoType }
+                    ];
+                    $scope.play.tracks = [];
+                    console.log($scope.play);
+                }, function (err) {
+                    alert(err);
+                }
             );
         }
         

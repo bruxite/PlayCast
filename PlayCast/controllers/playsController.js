@@ -6,7 +6,7 @@
     var fs = require('fs');
     
     var Game = require('../models/game');
-    var Play = require('../models/play');
+   // var Play = require('../models/play');
     
     var multer = require('multer');
     var upload = multer({
@@ -38,15 +38,23 @@
         });
         
         app.get('/api/plays/:gameId/:playId', function (req, res, next) {
+            console.log('inside api.getGame');
             var gameId = req.params.gameId;
+            console.log('gameId');
+            console.log(gameId);
             var playId = req.params.playId;
+            console.log('playId');
+            console.log(playId);
             
-            data.getPlay(gameId, playId, function (err, play) {
+
+            data.getGame(gameId, function (err, game) {
                 if (err) {
                     res.send(500, err);
-                } else if (play) {
+                } else if (game) {
+                    console.log('game');
+                    console.log(game);
                     res.set("Content-Type", "application/json");
-                    res.send(play);
+                    res.send(game);
                 } else {
                     res.send(404, "Play not found");
                 }
@@ -81,7 +89,7 @@
                     }
                     //logger.debug(file.name + " upload complete for game: " + fields.gameId);
                     //next({ path: savePath + file.name });
-                    fields.videoUrl = savePath + file.name;
+                    fields.videoUrl = "/" + savePath + file.name;
                     
                     console.log('fields');
                     console.log(fields);

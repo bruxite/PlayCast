@@ -8,6 +8,10 @@ app.controller("gamesViewController", [
         $scope.game = null;
         $scope.games = [];
         
+        $scope.videogularConfig = {
+            theme: "/lib/videogular-themes-default/videogular.css"
+        }
+
         var createBlankGame = function () {
             return {
                 date: new Date(),
@@ -49,7 +53,7 @@ app.controller("gamesViewController", [
         $scope.getGame = function () {
             console.log("inside $scope.getGame");
             var leftHashUrl = $location.absUrl().split("#");
-            var urlParts = $location.leftHashUrl[0]().split("/");
+            var urlParts = leftHashUrl[0].split("/");
             
             var gameId = urlParts[urlParts.length - 1];
             
