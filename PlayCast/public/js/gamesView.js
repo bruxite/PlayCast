@@ -25,8 +25,10 @@ app.controller("gamesViewController", [
                 seriesNumber: 1,
                 seriesTeam: 1,
                 playNumber: 1,
-                playDown: "First Down",
-                playResult: "X yards",
+                playDown: 1,
+                playYards: 0,
+                playPenalty: false,
+                playComments: "",
                 gameId: ""
             };
         }
@@ -46,7 +48,8 @@ app.controller("gamesViewController", [
         
         $scope.getGame = function () {
             console.log("inside $scope.getGame");
-            var urlParts = $location.absUrl().split("/");
+            var leftHashUrl = $location.absUrl().split("#");
+            var urlParts = $location.leftHashUrl[0]().split("/");
             
             var gameId = urlParts[urlParts.length - 1];
             
@@ -90,7 +93,9 @@ app.controller("gamesViewController", [
                         seriesTeam: $scope.newPlay.seriesTeam,
                         playNumber: $scope.newPlay.playNumber,
                         playDown: $scope.newPlay.playDown,
-                        playResult: $scope.newPlay.playResult,
+                        playYards: $scope.newPlay.playYards,
+                        playPenalty: $scope.newPlay.playPenalty,
+                        playComments: $scope.newPlay.playComments,
                         gameId: $scope.newPlay.gameId
                     }, file: file
                 }).progress(function (event) {

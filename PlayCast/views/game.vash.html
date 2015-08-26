@@ -35,23 +35,33 @@
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label>Play Number</label>
-                                <input class="form-control" type="number" data-ng-model="newPlay.playNumber" name="playNumber" required />
+                                <input class="form-control" type="number" data-ng-model="newPlay.playNumber" name="playNumber" required/>
                             </div>
                             <div class="form-group col-xs-6">
                                 <label>Down</label>
                                 <select class="form-control" type="select" data-ng-model="newPlay.playDown" name="playDown" required>
-                                    <option value="First Down">First Down</option>
-                                    <option value="Second Down">Second Down</option>
-                                    <option value="Third Down">FirstThird Down</option>
-                                    <option value="Fourth Down">Fourth Down</option>
+                                    <option value="1">First Down</option>
+                                    <option value="2">Second Down</option>
+                                    <option value="3">FirstThird Down</option>
+                                    <option value="4">Fourth Down</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-xs-6">
-                                <label>Result of Play - {{newPlay.playResult}}</label>
+                                <label>Yards</label>
+                                <input class="form-control" type="number" data-ng-model="newPlay.playYards" name="playYards" required />
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>Penalty?</label>
+                                <input class="form-control" type="checkbox" data-ng-model="newPlay.playPenalty" name="playPenalty"/>
+                            </div>
 
-                                <input class="form-control" type="text" placeholder="8 yards gained / Offensive holding" data-ng-model="newPlay.playResult" name="playResult" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label>Comments</label>
+                                <textarea class="form-control" placeholder="Run off of the left guard" data-ng-model="newPlay.playComments" rows="4" name="playComments"></textarea>
                             </div>
                         </div>
                         <div class="row">

@@ -61,19 +61,12 @@
             form.parse(req, function (err, fields, files) {
                 var file = files.file;
                 var gameId = fields.gameId;
+                fields.videoType = file.type;
                 console.log(file);
                 console.log(file.path);
                 console.log(file.type);
                 console.log(fields);
-                var play = new Play({
-                    seriesNumber: fields.seriesNumber,
-                    seriesTeam: fields.seriesTeam,
-                    playNumber: fields.playNumber,
-                    down: fields.playDown,
-                    result: fields.playResult,
-                    videoType: file.type,
-                    createdOn: new Date()
-                });
+                
                 var tempPath = file.path;
                 console.log('tempPath');
                 console.log(tempPath);
@@ -88,9 +81,11 @@
                     }
                     //logger.debug(file.name + " upload complete for game: " + fields.gameId);
                     //next({ path: savePath + file.name });
-                    play.videoUrl = savePath + file.name;
-                    console.log(play);
-                    data.addPlay(gameId, play, req, function (err, play) {
+                    fields.videoUrl = savePath + file.name;
+                    
+                    console.log('fields');
+                    console.log(fields);
+                    data.addPlay(fields, req, function (err, play) {
                         if (err) {
                             res.send(500, err);
                         } else {

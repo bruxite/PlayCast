@@ -6,14 +6,14 @@
     var fs = require('fs');
 
     var Game = require('../models/game');
-    var Play = require('../models/play');
+    //var Play = require('../models/play');
     
     //data.getGames = function(next) {
     //    next(null, seedData.initialGames);
     //};
     
     //return all games
-    data.getGames = function(next) {
+    data.getGames = function(next) { 
         Game.find(function(err, games) {
             if (err) {
                 console.log("Game.Find Error: " + err);
@@ -51,8 +51,8 @@
         });
     };
 
-    data.addPlay = function(gameId, play, req, next) {
-        var playVideo = "";
+    data.addPlay = function(fields, req, next) {
+        console.log("inside data.add play");
         //if (req.files) {
         //    fs.exists(req.files.playVideo.path, function (exists) {
         //        if (exists) {
@@ -62,14 +62,41 @@
         //        }
         //    });
         //}
-        console.log("inside data.add play");
+        var gameId = fields.gameId;
+        var play = {
+            seriesNumber: fields.seriesNumber,
+            seriesTeam: fields.seriesTeam,
+            playNumber: fields.playNumber,
+            playDown: fields.playDown,
+            playYards: fields.playYards,
+            playPenalty: fields.playPenalty,
+            playComments: fields.playComments,
+            videoType: fields.videoType,
+            videoUrl: fields.videoUrl,
+            createdOn: new Date()
+        };
+
+        console.log('gameId');
         console.log(gameId);
+        console.log('play');
         console.log(play);
+        
         Game.update(
             { "_id": gameId },
             {
                 "$push": {
-                    "plays": play
+                    "plays": {
+                        seriesNumber: fields.seriesNumber,
+                        seriesTeam: fields.seriesTeam,
+                        playNumber: fields.playNumber,
+                        playDown: fields.playDown,
+                        playYards: fields.playYards,
+                        playPenalty: fields.playPenalty,
+                        playComments: fields.playComments,
+                        videoUrl: fields.videoUrl,
+                        videoType: fields.videoType,
+                        createdOn: new Date()
+                    }
                 }
             },
             { safe: true, upsert: true },
