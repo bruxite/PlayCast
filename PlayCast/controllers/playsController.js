@@ -67,32 +67,51 @@
 
             var form = new formidable.IncomingForm();
             form.parse(req, function (err, fields, files) {
-                var file = files.file;
-                var gameId = fields.gameId;
-                fields.videoType = file.type;
-                console.log(file);
-                console.log(file.path);
-                console.log(file.type);
-                console.log(fields);
-                
-                var tempPath = file.path;
-                console.log('tempPath');
-                console.log(tempPath);
-                var savePath = 'uploads/' + gameId + '/'
-                console.log('savePath');
-                console.log(savePath);
-                
-                var targetPath = path.resolve(savePath + file.name);
-                fs.rename(tempPath, targetPath, function(err) {
-                    if (err) {
-                        throw err;
-                    }
-                    //logger.debug(file.name + " upload complete for game: " + fields.gameId);
-                    //next({ path: savePath + file.name });
-                    fields.videoUrl = "/" + savePath + file.name;
-                    
+                if (files) {
+                    console.log('found files');
+                    var file = files.file;
+                    var gameId = fields.gameId;
+                    fields.videoType = file.type == 'video/quicktime' ? 'video/mp4' : file.type;
+                    console.log(file);
+                    console.log(file.path);
+                    console.log(file.type);
+                    console.log(fields);
+
+                    var tempPath = file.path;
+                    console.log('tempPath');
+                    console.log(tempPath);
+                    var savePath = 'uploads/' + gameId + '/';
+                    console.log('savePath');
+                    console.log(savePath);
+
+                    var targetPath = path.resolve(savePath + file.name);
+                    fs.rename(tempPath, targetPath, function(err) {
+                        if (err) {
+                            throw err;
+                        }
+                        //logger.debug(file.name + " upload complete for game: " + fields.gameId);
+                        //next({ path: savePath + file.name });
+                        fields.videoUrl = "/" + savePath + file.name;
+
+                        console.log('fields');
+                        console.log(fields);
+                        data.addPlay(fields, req, function(err, play) {
+                            if (err) {
+                                res.send(500, err);
+                            } else {
+                                console.log('received result from data.addPlay');
+                                console.log(play);
+                                res.set("Content-Type", "application/json");
+                                res.send(play);
+                            }
+                        });
+
+                    });
+                } else {
+                    console.log('files not found'); 
                     console.log('fields');
                     console.log(fields);
+                        
                     data.addPlay(fields, req, function (err, play) {
                         if (err) {
                             res.send(500, err);
@@ -103,8 +122,9 @@
                             res.send(play);
                         }
                     });
+                }
 
-                });
+
             });
 
             //var gameId = req.params.gameId;
@@ -120,5 +140,85 @@
             
         });
 
+        app.post("/api/plays/addNoVideo/:gameId", function (req, res, next) { 
+            console.log("inside api add play");
+            
+            console.log('files not found');
+            console.log('body');
+            console.log(req.body);
+            
+            data.addPlay(req.body, req, function (err, play) {
+                if (err) {
+                    res.send(500, err);
+                } else {
+                    console.log('received result from data.addPlay');
+                    console.log(play);
+                    res.set("Content-Type", "application/json");
+                    res.send(play);
+                }
+            });
+        });
+
+        app.post("/api/plays/edit/:playId", function (req, res, next) {
+            var form = new formidable.IncomingForm();
+            form.parse(req, function (err, fields, files) {
+                if (files) {
+                    console.log('found files');
+                    var file = files.file;
+                    var gameId = fields.gameId;
+                    fields.videoType = file.type == 'video/quicktime' ? 'video/mp4' : file.type;
+                    console.log(file);
+                    console.log(file.path);
+                    console.log(file.type);
+                    console.log(fields);
+                    
+                    var tempPath = file.path;
+                    console.log('tempPath');
+                    console.log(tempPath);
+                    var savePath = 'uploads/' + gameId + '/';
+                    console.log('savePath');
+                    console.log(savePath);
+                    
+                    var targetPath = path.resolve(savePath + file.name);
+                    fs.rename(tempPath, targetPath, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        //logger.debug(file.name + " upload complete for game: " + fields.gameId);
+                        //next({ path: savePath + file.name });
+                        fields.videoUrl = "/" + savePath + file.name;
+                        
+                        console.log('fields');
+                        console.log(fields);
+                        data.updatePlay(fields, req, function (err, play) {
+                            if (err) {
+                                res.send(500, err);
+                            } else {
+                                console.log('received result from data.addPlay');
+                                console.log(play);
+                                res.set("Content-Type", "application/json");
+                                res.send(play);
+                            }
+                        });
+
+                    });
+                } else {
+                    console.log('files not found');
+                    console.log('fields');
+                    console.log(fields);
+                    
+                    data.addPlay(fields, req, function (err, play) {
+                        if (err) {
+                            res.send(500, err);
+                        } else {
+                            console.log('received result from data.addPlay');
+                            console.log(play);
+                            res.set("Content-Type", "application/json");
+                            res.send(play);
+                        }
+                    });
+                }
+            });
+        });
     };
 })(module.exports);

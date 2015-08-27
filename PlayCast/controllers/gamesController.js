@@ -49,6 +49,8 @@
                 isDeleted: false,
                 createdOn: new Date()
             });
+
+            console.log(game);
                 
             data.addGame(game, function(err, savedGame) {
                 if (err) {

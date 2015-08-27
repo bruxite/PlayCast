@@ -7,13 +7,15 @@
 <div data-ng-app="playCast">
     <div data-ng-controller="gamesViewController" data-ng-init="getGames()">
         <div class="row">
-            <div class="list-group col-lg-6">
-                <div ng-repeat="game in games">
+            <div class="list-group col-lg-12">
+                <div ng-repeat="game in games" class="game-list">
                     <a href="/game/{{game._id}}" class="list-group-item list-group-item-info">
-                        {{game.opponent}}
-                        <span data-ng-show="game.location"> at {{game.location}}</span>
-                        <span data-ng-show="game.date" ng-bind="game.date | date:'MM/dd/yyyy'"></span>
-                        <span class="badge">{{game.plays.count}}</span>
+                        <h2>
+                            {{game.opponent}}
+                            <span data-ng-show="game.location"> at {{game.location}}</span>
+                            <span data-ng-show="game.date" ng-bind="game.date | date:'MM/dd/yyyy'"></span>
+                            <span class="badge">{{game.plays.length}}</span>
+                        </h2>
                     </a>
                 </div>
             </div>
@@ -24,16 +26,18 @@
             <form role="form" class="form-horizontal" name="addGame" ng-submit="saveGame(newGame)">
                 <div class="form-group">
                     <label>Date</label>
-                    <input class="form-control" type="date" data-ng-model="newGame.date" name="date" required />
+                    <input class="form-control" type="date" data-ng-model="newGame.date" name="date" required/>
                     <span ng-show="addGame.date.$error.required"></span>
                 </div>
-                <div class="radio">
-                    <label>Home</label>
-                    <input type="radio" value="Home" data-ng-model="newGame.location" name="location" />
-                </div>
-                <div class="radio">
-                    <label>Away</label>
-                    <input type="radio" value="Away" data-ng-model="newGame.location" name="location" />
+                <div>
+                    <div class="radio">
+                        <label>Home</label>
+                        <input type="radio" value="Home" data-ng-model="newGame.location" name="location" />
+                    </div>
+                    <div class="radio">
+                        <label>Away</label>
+                        <input type="radio" value="Away" data-ng-model="newGame.location" name="location" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Opponent</label>

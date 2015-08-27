@@ -44,6 +44,24 @@
             }
         });
     };
+    
+    data.addGame = function (game, req, next) {
+        console.log("inside data.addGame");
+        console.log(game);
+        
+        game.save(function (err) {
+                if (err) {
+                    // If it failed, return error
+                    console.log(err);
+                    next(err, null);
+                } else {
+                    console.log('game.save complete');
+                    console.log(game);
+                    next(null, game);
+                }
+            }
+        );
+    };
 
     data.addPlay = function(fields, req, next) {
         console.log("inside data.add play");
@@ -54,7 +72,7 @@
             team: fields.team,
             down: fields.down,
             yardsToGo: fields.yardsToGo,
-            yardsGained: fields.playYards,
+            yardsGained: fields.yardsGained,
             penalty: fields.penalty,
             comments: fields.comments,
             videoUrl: fields.videoUrl,
@@ -71,12 +89,12 @@
             { "_id": gameId },
             {
                 "$push": {
-                    "plays": {
+                    "plays": { 
                         number: fields.number,
                         team: fields.team,
                         down: fields.down,
                         yardsToGo: fields.yardsToGo,
-                        yardsGained: fields.playYards,
+                        yardsGained: fields.yardsGained,
                         penalty: fields.penalty,
                         comments: fields.comments,
                         videoUrl: fields.videoUrl,
@@ -92,7 +110,96 @@
                     console.log(err);
                     next(err, null);
                 } else {
-                    console.log('game.update');
+                    console.log('game.update result');
+                    console.log(result);
+                    next(null, play);
+                }
+            }
+        );
+    };
+    
+    data.updatePlay = function (fields, req, next) {
+        console.log("inside data.Update play");
+        
+        var gameId = fields.gameId;
+        var playId = fields.playId;
+        console.log('playId');
+        console.log(playId);
+        var play = {
+            number: fields.number,
+            team: fields.team,
+            down: fields.down,
+            yardsToGo: fields.yardsToGo,
+            yardsGained: fields.yardsGained,
+            penalty: fields.penalty,
+            comments: fields.comments,
+            videoUrl: fields.videoUrl,
+            videoType: fields.videoType,
+            createdOn: new Date()
+        };
+        
+        console.log('gameId');
+        console.log(gameId);
+        console.log('play');
+        console.log(play);
+        
+//query =
+//'fanclubs.fanclub_id': fanclub_id
+
+//fan_update =
+//'fanclubs.$.fanclub_name': fanclub_data.fanclub_name
+
+//Fan.update query, fan_update, (err, numAffected) ->
+//console.log err
+//console.log numAffected
+        
+               
+
+        //Game.update(
+        //    { "plays._id": playId },
+        //    {
+        //        "$push": {
+        //            "plays.$.play": {
+        //                number: fields.number,
+        //                team: fields.team,
+        //                down: fields.down,
+        //                yardsToGo: fields.yardsToGo,
+        //                yardsGained: fields.yardsGained,
+        //                penalty: fields.penalty,
+        //                comments: fields.comments,
+        //                videoUrl: fields.videoUrl,
+        //                videoType: fields.videoType,
+        //                createdOn: new Date()
+        //            }
+        //        }
+        //    },
+        //    { safe: true, upsert: true },
+            
+            Game.findOneAndUpdate(
+                { "_id": gameId, "plays._id": playId },
+    {
+                    "$set": {
+                        "plays.$": {
+                            number: fields.number,
+                            team: fields.team,
+                            down: fields.down,
+                            yardsToGo: fields.yardsToGo,
+                            yardsGained: fields.yardsGained,
+                            penalty: fields.penalty,
+                            comments: fields.comments,
+                            videoUrl: fields.videoUrl,
+                            videoType: fields.videoType,
+                            createdOn: new Date()
+                        }
+                    }
+                },
+            function (err, result) {
+                if (err) {
+                    // If it failed, return error
+                    console.log(err);
+                    next(err, null);
+                } else {
+                    console.log('game.update result');
                     console.log(result);
                     next(null, play);
                 }

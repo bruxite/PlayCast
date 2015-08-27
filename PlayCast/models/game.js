@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var playSchema = new mongoose.Schema({
     number: Number,
     team: String,
-    down: Number,
+    down: String,
     yardsToGo: Number,
     yardsGained: Number,
     penalty: Boolean,

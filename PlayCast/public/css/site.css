@@ -1,22 +1,9 @@
 ﻿body {
     font: 14px Helvetica, Arial, sans-serif;
     color: #222222;
+    padding-top: 70px;
+    padding-bottom: 30px;
 }
-
-.playBox {
-    border: 1px black;
-    margin: 30px 0 0 0;
-    background: lightgrey;
-    background-clip: content-box;
-} 
-
-.playVideo {
-    padding-top: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-} 
-
 
 .videogular-container {
 	width: 100%;
@@ -44,4 +31,13 @@
 		width: 728px;
 		height: 409.5px;
 	}
+}
+
+.game-list {
+    display: block;
+    padding-bottom: 25px;
+}
+
+.play-icon {
+    font-size: 18px;
 }
