@@ -2,13 +2,13 @@
 var mongoose = require('mongoose');
 
 var playSchema = new mongoose.Schema({
-    seriesNumber: Number,
-    seriesTeam: String,
-    playNumber: Number,
-    playDown: Number,
-    playYards: Number,
-    playPenalty: Boolean,
-    playComments: String,
+    number: Number,
+    team: String,
+    down: Number,
+    yardsToGo: Number,
+    yardsGained: Number,
+    penalty: Boolean,
+    comments: String,
     videoUrl: String,
     videoType: String,
     createdOn: Date

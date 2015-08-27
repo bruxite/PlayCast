@@ -26,13 +26,13 @@ app.controller("gamesViewController", [
         var createBlankPlay = function () {
             console.log("createBlankPlay called");
             return {
-                seriesNumber: 1,
-                seriesTeam: 1,
-                playNumber: 1,
-                playDown: 1,
-                playYards: 0,
-                playPenalty: false,
-                playComments: "",
+                number: 1,
+                team: 'Home',
+                down: 'First Down',
+                yardsToGo: 10,
+                yardsGained: 0,
+                penalty: false,
+                comments: "",
                 gameId: ""
             };
         }
@@ -93,13 +93,13 @@ app.controller("gamesViewController", [
                 Upload.upload({
                     url: '/api/plays/add/' + $scope.newPlay.gameId, 
                     fields: {
-                        seriesNumber: $scope.newPlay.seriesNumber,
-                        seriesTeam: $scope.newPlay.seriesTeam,
-                        playNumber: $scope.newPlay.playNumber,
-                        playDown: $scope.newPlay.playDown,
-                        playYards: $scope.newPlay.playYards,
-                        playPenalty: $scope.newPlay.playPenalty,
-                        playComments: $scope.newPlay.playComments,
+                        number: $scope.newPlay.number,
+                        team: $scope.newPlay.team,
+                        down: $scope.newPlay.down,
+                        yardsToGo: $scope.newPlay.yardsToGo,
+                        yardsGained: $scope.newPlay.yardsGained,
+                        penalty: $scope.newPlay.penalty,
+                        comments: $scope.newPlay.comments,
                         gameId: $scope.newPlay.gameId
                     }, file: file
                 }).progress(function (event) {
