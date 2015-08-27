@@ -57,11 +57,11 @@
             yardsGained: fields.playYards,
             penalty: fields.penalty,
             comments: fields.comments,
-            videoType: fields.videoType,
             videoUrl: fields.videoUrl,
+            videoType: fields.videoType,
             createdOn: new Date()
         };
-
+        
         console.log('gameId');
         console.log(gameId);
         console.log('play');
@@ -71,18 +71,18 @@
             { "_id": gameId },
             {
                 "$push": {
-                    "plays": play //{
-                        //seriesNumber: fields.seriesNumber,
-                        //seriesTeam: fields.seriesTeam,
-                        //playNumber: fields.playNumber,
-                        //playDown: fields.playDown,
-                        //playYards: fields.playYards,
-                        //playPenalty: fields.playPenalty,
-                        //playComments: fields.playComments,
-                        //videoUrl: fields.videoUrl,
-                        //videoType: fields.videoType,
-                        //createdOn: new Date()
-                    //}
+                    "plays": {
+                        number: fields.number,
+                        team: fields.team,
+                        down: fields.down,
+                        yardsToGo: fields.yardsToGo,
+                        yardsGained: fields.playYards,
+                        penalty: fields.penalty,
+                        comments: fields.comments,
+                        videoUrl: fields.videoUrl,
+                        videoType: fields.videoType,
+                        createdOn: new Date()
+                    }
                 }
             },
             { safe: true, upsert: true },

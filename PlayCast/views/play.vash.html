@@ -1,45 +1,108 @@
 ﻿@html.extend('layout', function(model){
+	@html.block('body', function(model){
 
-    @html.block('body', function(model){
-		@if(model.error){
-<p class="text-error">Error occurred: @model.error</p>
-		}
+<div class="row" data-ng-app="playCast" data-ng-controller="gamesViewController">
+    <div class="panel-group">
+        <form role="form" class="form-horizontal" name="addPlay" enctype="multipart/form-data" ng-submit="savePlay(newPlay.video)">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        Add Play
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group col-xs-6">
+                                <label>Play Number</label>
+                                <input class="form-control" type="number" data-ng-model="newPlay.number" name="number" required />
+                            </div>
+                        </div>  
+                        <div class="col-xs-6">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" data-ng-model="newPlay.team" value="Offense" name="team" />
+                                    Offense
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" data-ng-model="newPlay.team" value="Defense" name="team" />
+                                    Defense
+                                </label>
+                            </div>
+                        </div>
 
-<div data-ng-app="playCast" data-ng-controller="playsViewController" class="row" data-ng-init="getPlay()">
-    <a href="/game/{{gameId}}" class="btn btn-info">Back</a>
-    <hr/>
-    <p>{{play.videoType}}</p>
-    <p>{{play.videoUrl}}</p>
 
-    <div class="playBox col-md-6 videogular-container">
-        <videogular vg-theme="videogularConfig.theme">
-            <vg-media vg-src="play.sources"
-                      vg-tracks="play.tracks">
-            </vg-media>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label>Down</label>
+                            <select class="form-control" type="select" data-ng-model="newPlay.down" name="down" required>
+                                <option value="First Down">First Down</option>
+                                <option value="Second Down">Second Down</option>
+                                <option value="Third Down">Third Down</option>
+                                <option value="Fourth Down">Fourth Down</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label>Series Number</label>
+                            <input class="form-control" type="number" data-ng-model="newPlay.yardsToGo" name="yardsToGo" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label>Yards</label>
+                            <input class="form-control" type="number" data-ng-model="newPlay.yardsGained" name="yardsGained" required />
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label>Penalty?</label>
+                            <input class="form-control" type="checkbox" data-ng-model="newPlay.penalty" name="penalty" />
+                        </div>
 
-            <vg-controls>
-                <vg-play-pause-button></vg-play-pause-button>
-                <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
-                <vg-scrub-bar>
-                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                </vg-scrub-bar>
-                <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
-                <vg-volume>
-                    <vg-mute-button></vg-mute-button>
-                    <vg-volume-bar></vg-volume-bar>
-                </vg-volume>
-                <vg-fullscreen-button></vg-fullscreen-button>
-            </vg-controls>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label>Comments</label>
+                            <textarea class="form-control" placeholder="Run off of the left guard" data-ng-model="newPlay.comments" rows="4" name="comments"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label>Video</label>
+                            <input class="form-control" type="file" ngf-select accept="video/*" data-ng-model="newPlay.video" name="video" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <p>game._id - {{game._id}}</p>
+                            <p>newPlay.gameId - {{newPlay.gameId}}</p>
+                            <input name="gameId" type="hidden" data-ng-model="newPlay.gameId" />
+                            <button class="btn btn-primary" type="submit" ng-disabled="addPlay.$invalid">Submit</button>
+                        </div>
+                    </div>
 
-            <vg-overlay-play></vg-overlay-play>
-        </videogular>
+                </div>
 
-        <ul>
-            <li>{{play.series}} - {{play.down}}</li>
-            <li><a href='/plays/{{play._id}}'>{{play.series}} - {{play.down}}</a></li>
-        </ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </form>
     </div>
 
+    <hr />
+    <div data-ng-init="getGame()">
+        <h2>{{game.opponent}}</h2>
+        <p>Plays.length - {{game.plays.length}}</p>
+        <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays  | orderBy:'createdOn':true">
+            <div class="list-group col-lg-6">
+                    <p class="list-group-item list-group-item-info">
+                        {{play.down}} and {{play.yardsToGo}} gained / lost {{play.yardsGained}}
+                    </p>
+            </div>
+        </div>
+    </div>
 </div>
 	})
 })

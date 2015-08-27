@@ -54,6 +54,7 @@
     <Content Include="views\layout.vash" />
     <Content Include="views\layout.vash.html" />
     <Content Include="views\play.vash" />
+    <Content Include="views\play.vash.html.save" />
     <Content Include="views\play.vash.html" />
   </ItemGroup>
   <ItemGroup>

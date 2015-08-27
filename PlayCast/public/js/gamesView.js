@@ -7,7 +7,11 @@ app.controller("gamesViewController", [
     function ($scope, $window, $http, $location, $sce, Upload) {
         $scope.game = null;
         $scope.games = [];
-        
+        $scope.sources = [
+            { src: '', type: '' }
+        ];
+        $scope.tracks = [];
+                    
         $scope.videogularConfig = {
             theme: "/lib/videogular-themes-default/videogular.css"
         }
@@ -112,6 +116,13 @@ app.controller("gamesViewController", [
                     $scope.$apply();
                 });
             }
+        }
+
+        $scope.setPlayViewer = function (play) {
+            console.log('setPlayViewer');
+            $scope.sources = [
+                { src: $sce.trustAsResourceUrl(play.videoUrl), type: play.videoType }
+            ];
         }
         
 

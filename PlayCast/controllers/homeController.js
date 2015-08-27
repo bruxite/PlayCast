@@ -50,6 +50,12 @@
             //});
 
         });
+        
+        app.get('/game/plays/:id', function (req, res, next) {
+            
+            res.render('play', { title: 'Add Play | PlayCast' });
+
+        });
 
         app.post('/play/add', upload.single('playVideo'), function (req, res) {
 
