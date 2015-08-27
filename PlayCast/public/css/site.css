@@ -44,4 +44,7 @@
 		width: 728px;
 		height: 409.5px;
 	}
+    body {
+        font: 16px Helvetica, Arial, sans-serif;
+    }
 }

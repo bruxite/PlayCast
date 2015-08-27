@@ -1,15 +1,16 @@
 ﻿@html.extend('layout', function(model){
 	@html.block('body', function(model){
 
-<div class="row" data-ng-app="playCast" data-ng-controller="gamesViewController">
+<div id="GameDiv" class="row" data-ng-app="playCast" data-ng-controller="gamesViewController">
     <div data-ng-init="getGame()">
         <div class="row">
-            <p>{{sources[0].src}} - {{sources[0].type}}</p>
+            <h2>{{game.opponent}}</h2>
+            <!--<p>{{game.opponent.sources[0].src}} - {{videogularConfig.sources[0].type}}</p>-->
 
             <div class="playBox col-md-6 videogular-container">
                 <videogular vg-theme="videogularConfig.theme">
-                    <vg-media vg-src="sources"
-                              vg-tracks="tracks">
+                    <vg-media vg-src="videogularConfig.sources"
+                              vg-tracks="videogularConfig.tracks">
                     </vg-media>
 
                     <vg-controls>
@@ -36,7 +37,7 @@
         </div>
         <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays  | orderBy:'createdOn':true">
             <div class="panel panel-default col-lg-4 col-md-6 col-sm-12">
-                <a href="#" ng-click="setPlayViewer(play)">
+                <a href="#" ng-click="setPlayViewer(play)"  scroll-on-click>
                     <div class="panel-heading">
                         <h3 class="panel-title">Play {{play.number}} - {{play.team}}</h3>
                     </div>

@@ -51,7 +51,7 @@
 
         });
         
-        app.get('/game/plays/:id', function (req, res, next) {
+        app.get('/game/plays/:gameId', function (req, res, next) {
             
             res.render('play', { title: 'Add Play | PlayCast' });
 
