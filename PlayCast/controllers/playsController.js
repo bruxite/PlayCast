@@ -140,7 +140,7 @@
             
         });
 
-        app.post("/api/plays/addNoVideo/:gameId", function (req, res, next) {
+        app.post("/api/plays/addNoVideo/:gameId", function (req, res, next) { 
             console.log("inside api add play");
             
             console.log('files not found');
