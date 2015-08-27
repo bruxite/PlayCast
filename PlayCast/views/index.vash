@@ -8,12 +8,14 @@
     <div data-ng-controller="gamesViewController" data-ng-init="getGames()">
         <div class="row">
             <div class="list-group col-lg-12">
-                <div ng-repeat="game in games">
+                <div ng-repeat="game in games" class="game-list">
                     <a href="/game/{{game._id}}" class="list-group-item list-group-item-info">
-                        {{game.opponent}}
-                        <span data-ng-show="game.location"> at {{game.location}}</span>
-                        <span data-ng-show="game.date" ng-bind="game.date | date:'MM/dd/yyyy'"></span>
-                        <span class="badge">{{game.plays.length}}</span>
+                        <h2>
+                            {{game.opponent}}
+                            <span data-ng-show="game.location"> at {{game.location}}</span>
+                            <span data-ng-show="game.date" ng-bind="game.date | date:'MM/dd/yyyy'"></span>
+                            <span class="badge">{{game.plays.length}}</span>
+                        </h2>
                     </a>
                 </div>
             </div>

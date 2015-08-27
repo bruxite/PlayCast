@@ -37,18 +37,20 @@
         </div>
         <div ng-show="game.plays.length > 0" ng-repeat="play in game.plays  | orderBy:'createdOn':true">
             <div class="panel panel-default col-lg-4 col-md-6 col-sm-12">
-                <a href="#" ng-click="setPlayViewer(play)"  scroll-on-click>
                     <div class="panel-heading">
                         <h3 class="panel-title">Play {{play.number}} - {{play.team}}</h3>
                     </div>
-                    <div class="panel-body">
+                <div class="panel-body">
+                    <a href="#" ng-click="setPlayViewer(play)" scroll-on-click>
+                        <i class="fa fa-play-circle play-icon">Play</i>        
+                    </a>
                         <ul>
-                            <li>{{play.down}} and {{play.yardsToGo}}</li>
+                            <li>{{play.down}} down and {{play.yardsToGo}} to go</li>
                             <li>{{play.yardsGained}} Gained / Lost</li>
 
                         </ul>
-                    </div>
-                </a>
+                </div>
+                
                 <div class="panel-footer">
                     <p>{{play.videoUrl}} - {{play.videoType}}</p>
                     <a href="{{play.videoUrl}}">Direct Link</a>
